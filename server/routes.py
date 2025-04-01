@@ -42,3 +42,39 @@ def create_contact():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+# Delete a contact
+@app.route("/api/contacts/<int:contact_id>", methods=["DELETE"])
+def delete_contact(contact_id):
+    try:
+        contact = Contact.query.get(contact_id)
+        if not contact:
+            return jsonify({"error": "Not Found", "message": "Contact not found."}), 404
+        
+        db.session.delete(contact)
+        db.session.commit()
+        
+        return jsonify({"message": "Contact deleted successfully."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+    
+# Update a contact
+@app.route("/api/contacts/<int:contact_id>", methods=["PATCH"])
+def update_contact(contact_id):
+    try:
+        data = request.json
+        contact = Contact.query.get(contact_id)
+        
+        if not contact:
+            return jsonify({"error": "Not Found", "message": "Contact not found."}), 404
+        
+        for key, value in data.items():
+            setattr(contact, key, value)
+        
+        db.session.commit()
+        
+        return jsonify(contact.to_json()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
