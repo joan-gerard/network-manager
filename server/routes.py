@@ -15,6 +15,11 @@ def create_contact():
     try:
         data = request.json
         
+        required_fields = ["first_name", "last_name", "role", "company", "email"]
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": "Bad Request", "message": f"The '{field}' field is required."}), 400    
+            
         first_name = data.get("first_name")
         last_name = data.get("last_name")
         role = data.get("role")
