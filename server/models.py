@@ -23,5 +23,5 @@ class Contact(db.Model):
             "linkedinProfile": self.linkedin_profile,
             "phoneNumber": self.phone_number,
             "notes": self.notes,
-            "imgUrl": self.img_url,
+            "imgUrl": self.img_url
         }

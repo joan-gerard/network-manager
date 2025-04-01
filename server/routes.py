@@ -6,7 +6,7 @@ from models import Contact
 @app.route("/api/contacts", methods=["GET"])
 def get_contacts():
     contacts = Contact.query.all()
-    result = [Contact.to_json() for contact in contacts]
+    result = [contact.to_json() for contact in contacts]
     return jsonify(result)
 
 # Create a contact
@@ -18,17 +18,22 @@ def create_contact():
         first_name = data.get("first_name")
         last_name = data.get("last_name")
         role = data.get("role")
-        description = data.get("description")
+        company = data.get("company")
+        email = data.get("email")
+        linkedin_profile = data.get("linkedin_profile")
+        phone_number = data.get("phone_number")
+        notes = data.get("notes")
         
         img_url = f"https://avatar.iran.liara.run/username?username={first_name}+{last_name}"
         
-        new_contact = Contact(first_name=first_name, last_name=last_name, role=role, description=description, img_url=img_url)
+        new_contact = Contact(first_name=first_name, last_name=last_name, role=role, company=company, email=email, linkedin_profile=linkedin_profile, phone_number=phone_number, notes=notes, img_url=img_url)
+        print(new_contact)
         
         db.session.add(new_contact)
         
         db.session.commit()
         
-        return jsonify({"message": "Contact created successfilly"}), 201
+        return jsonify(new_contact.to_json()), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
