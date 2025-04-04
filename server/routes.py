@@ -31,6 +31,8 @@ def create_contact():
         
         img_url = f"https://avatar.iran.liara.run/username?username={first_name}+{last_name}"
         
+        # TODO: Add timestamp for created_at and updated_at
+        
         new_contact = Contact(first_name=first_name, last_name=last_name, role=role, company=company, email=email, linkedin_profile=linkedin_profile, phone_number=phone_number, notes=notes, img_url=img_url)
         print(new_contact)
         
